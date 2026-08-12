@@ -1,0 +1,52 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+.expo/
+web-build/
+prisma/generated/
+
+# Environment files — never commit real secrets
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+!**/.env.example
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.vercel/
+.turbo/
+.cache/
+
+# TypeScript
+*.tsbuildinfo
+.env
+
+.codex/visualizations/2026/08/11/menu-ui-review.html
+context/ui-ux-implementation-roadmap.md
+/context
+# Deployment and architecture documentation is intentionally versioned.
+Terrasse_Bleue_7-Day_Developer_Cahier_des_Charges.md
+/apps/mobile/.demo-android-export
+apps/admin/.env.example
+apps/admin/.env.example
+apps/api/.env.example

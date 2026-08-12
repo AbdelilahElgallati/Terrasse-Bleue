@@ -1,0 +1,183 @@
+generator client {
+  provider = "prisma-client"
+  output   = "./generated/client"
+  moduleFormat = "cjs"
+  importFileExtension = "js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  CUSTOMER
+  STAFF
+  MANAGER
+  ADMIN
+}
+
+enum OrderType {
+  DINE_IN
+  TAKEAWAY
+  DELIVERY
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PREPARING
+  READY
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentMethod {
+  CASH
+  ONLINE
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+model User {
+  id               String               @id @default(uuid()) @db.Uuid
+  name             String               @db.VarChar(100)
+  email            String               @unique @db.VarChar(255)
+  phone            String?              @db.VarChar(30)
+  passwordHash     String
+  refreshTokenHash String?
+  role             Role                 @default(CUSTOMER)
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
+  orders           Order[]
+  statusChanges    OrderStatusHistory[] @relation("StatusChangedBy")
+}
+
+model RestaurantSettings {
+  id                    String   @id @default("default") @db.VarChar(20)
+  restaurantName        String   @default("Terrasse Bleue") @db.VarChar(100)
+  address               String   @default("Essaouira, Maroc") @db.VarChar(255)
+  contactPhone          String?  @db.VarChar(30)
+  contactEmail          String?  @db.VarChar(255)
+  isOpen                Boolean  @default(true)
+  acceptsOrders         Boolean  @default(true)
+  estimatedPrepMinutes  Int      @default(25)
+  notificationSound     Boolean  @default(true)
+  updatedAt             DateTime @updatedAt
+}
+
+model Category {
+  id          String    @id @default(uuid()) @db.Uuid
+  name        String    @db.VarChar(100)
+  description String?
+  imageUrl    String?
+  isActive    Boolean   @default(true)
+  sortOrder   Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  products    Product[]
+  @@index([isActive, sortOrder])
+}
+
+model Product {
+  id          String          @id @default(uuid()) @db.Uuid
+  categoryId  String          @db.Uuid
+  name        String          @db.VarChar(140)
+  description String
+  price       Decimal         @db.Decimal(10, 2)
+  imageUrl    String?
+  isAvailable Boolean         @default(true)
+  isFeatured  Boolean         @default(false)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  category    Category        @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  options     ProductOption[]
+  orderItems  OrderItem[]
+  @@index([categoryId, isAvailable])
+}
+
+model ProductOption {
+  id        String               @id @default(uuid()) @db.Uuid
+  productId String               @db.Uuid
+  name      String               @db.VarChar(100)
+  sortOrder Int                  @default(0)
+  isActive  Boolean              @default(true)
+  product   Product              @relation(fields: [productId], references: [id], onDelete: Cascade)
+  values    ProductOptionValue[]
+  @@index([productId, sortOrder])
+}
+
+model ProductOptionValue {
+  id         String        @id @default(uuid()) @db.Uuid
+  optionId   String        @db.Uuid
+  label      String        @db.VarChar(100)
+  priceDelta Decimal       @default(0) @db.Decimal(10, 2)
+  sortOrder  Int           @default(0)
+  isActive   Boolean       @default(true)
+  option     ProductOption @relation(fields: [optionId], references: [id], onDelete: Cascade)
+  @@index([optionId, sortOrder])
+}
+
+model Order {
+  id            String               @id @default(uuid()) @db.Uuid
+  orderNumber   String               @unique @db.VarChar(30)
+  userId        String               @db.Uuid
+  status        OrderStatus          @default(PENDING)
+  orderType     OrderType
+  subtotal      Decimal              @db.Decimal(10, 2)
+  deliveryFee   Decimal              @default(0) @db.Decimal(10, 2)
+  total         Decimal              @db.Decimal(10, 2)
+  deliveryAddress Json?
+  notes         String?              @db.VarChar(500)
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+  user          User                 @relation(fields: [userId], references: [id], onDelete: Restrict)
+  items         OrderItem[]
+  statusHistory OrderStatusHistory[]
+  payment       Payment?
+  @@index([userId, createdAt])
+  @@index([status])
+}
+
+model OrderItem {
+  id                  String   @id @default(uuid()) @db.Uuid
+  orderId             String   @db.Uuid
+  productId           String?  @db.Uuid
+  productNameSnapshot String   @db.VarChar(140)
+  unitPrice           Decimal  @db.Decimal(10, 2)
+  quantity            Int
+  subtotal            Decimal  @db.Decimal(10, 2)
+  selectedOptions     Json?
+  order               Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product             Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  @@index([orderId])
+}
+
+model OrderStatusHistory {
+  id              String       @id @default(uuid()) @db.Uuid
+  orderId         String       @db.Uuid
+  previousStatus  OrderStatus?
+  newStatus       OrderStatus
+  changedByUserId String?      @db.Uuid
+  createdAt       DateTime     @default(now())
+  order           Order        @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  changedBy       User?        @relation("StatusChangedBy", fields: [changedByUserId], references: [id], onDelete: SetNull)
+  @@index([orderId, createdAt])
+}
+
+model Payment {
+  id                String        @id @default(uuid()) @db.Uuid
+  orderId           String        @unique @db.Uuid
+  method            PaymentMethod
+  status            PaymentStatus @default(PENDING)
+  amount            Decimal       @db.Decimal(10, 2)
+  provider           String?       @db.VarChar(80)
+  providerReference String?       @db.VarChar(150)
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  order             Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}

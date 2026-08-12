@@ -1,0 +1,43 @@
+:root {
+  --color-brand-primary: #123b4a;
+  --color-brand-secondary: #2c8c8c;
+  --color-brand-accent: #d9785b;
+  --color-surface-page: #f5f7f6;
+  --color-surface-card: #ffffff;
+  --color-surface-selected: #e8f4f2;
+  --color-text-primary: #233239;
+  --color-text-secondary: #59686b;
+  --color-text-heading: #123b4a;
+  --color-text-link: #176b6b;
+  --color-border-default: #d9e1e0;
+  --color-focus: #176b6b;
+  --font-interface: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --radius-control: 10px;
+  --radius-card: 16px;
+  --motion-fast: 160ms;
+  --motion-standard: 240ms;
+}
+
+body { background: var(--color-surface-page); color: var(--color-text-primary); font-family: var(--font-interface); }
+a, button, input, select, textarea, [role='tab'], [role='switch'] { -webkit-tap-highlight-color: transparent; }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, [role='tab']:focus-visible, [role='switch']:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+.muted, .page-header p, .panel-header p { color: var(--color-text-secondary); }
+.button { min-height: 44px; }
+.button.small { min-height: 40px; }
+.modal-close, .table-pagination button { min-width: 44px; min-height: 44px; }
+.status { border: 1px solid transparent; }
+.status-PENDING { background: #f4e7cb; color: #6d5018; border-color: #dec58f; }
+.status-CONFIRMED { background: #dceeee; color: #124f58; border-color: #b6d8d8; }
+.status-PREPARING { background: #f8e5dc; color: #843f2b; border-color: #e8c0b0; }
+.status-READY { background: #dde9ed; color: #123b4a; border-color: #b7ced6; }
+.status-COMPLETED { background: #ddefe5; color: #215f42; border-color: #b8dbc7; }
+.status-CANCELLED { background: #f8e0de; color: #8b3434; border-color: #e7b7b3; }
+.spinner { animation-duration: 900ms; }
+.sr-only { position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; margin: -1px !important; overflow: hidden !important; clip: rect(0, 0, 0, 0) !important; white-space: nowrap !important; border: 0 !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}

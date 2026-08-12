@@ -1,0 +1,1 @@
+.header-actions{display:flex;align-items:center;gap:18px}.track-link{color:var(--turq);font-size:13px;font-weight:800;padding:10px 0}.track-link:hover{text-decoration:underline}@media(max-width:560px){.header-actions{gap:10px}.track-link{font-size:0}.track-link:before{content:'Suivi';font-size:12px}.brand span{display:none}}

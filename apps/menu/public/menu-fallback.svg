@@ -1,0 +1,3 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Terrasse Bleue">
+  <rect width="800" height="600" fill="#dceeee"/><path d="M0 420c130-80 230 70 370-20s260-30 430 30v170H0z" fill="#2c8c8c" opacity=".55"/><circle cx="620" cy="145" r="65" fill="#d9785b" opacity=".8"/><path d="M195 350h410" stroke="#123b4a" stroke-width="14" stroke-linecap="round"/><path d="M270 350c18-120 242-120 260 0" fill="none" stroke="#123b4a" stroke-width="14"/><text x="400" y="495" text-anchor="middle" font-family="Georgia,serif" font-size="42" fill="#123b4a">Terrasse Bleue</text>
+</svg>

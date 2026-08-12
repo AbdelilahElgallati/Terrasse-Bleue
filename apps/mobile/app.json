@@ -1,0 +1,31 @@
+{
+  "expo": {
+    "name": "Terrasse Bleue",
+    "slug": "terrasse-bleue",
+    "scheme": "terrassebleue",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/terrasse-bleue-mark-contrast.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#F7F1E5",
+        "foregroundImage": "./assets/terrasse-bleue-mark-contrast.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "web": {
+      "favicon": "./assets/terrasse-bleue-mark-contrast.png"
+    }
+  }
+}

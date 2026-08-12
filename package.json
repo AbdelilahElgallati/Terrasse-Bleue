@@ -1,0 +1,44 @@
+{
+  "name": "terrasse-bleue",
+  "version": "1.0.0",
+  "description": "Terrasse Bleue mobile ordering platform",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"pnpm run dev:api\" \"pnpm run dev:mobile\" \"pnpm run dev:admin\" \"pnpm run dev:menu\"",
+    "dev:api": "pnpm --filter @terrasse-bleue/api dev",
+    "dev:mobile": "pnpm --filter @terrasse-bleue/mobile start",
+    "dev:admin": "pnpm --filter @terrasse-bleue/admin dev",
+    "dev:menu": "pnpm --filter @terrasse-bleue/menu dev",
+    "build": "pnpm run build:api && pnpm run build:admin && pnpm run build:menu",
+    "build:api": "pnpm --filter @terrasse-bleue/api build",
+    "build:admin": "pnpm --filter @terrasse-bleue/admin build",
+    "build:menu": "pnpm --filter @terrasse-bleue/menu build",
+    "qr:menu": "pnpm --filter @terrasse-bleue/menu qr",
+    "lint": "pnpm -r --if-present lint",
+    "test": "pnpm -r --if-present test",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "db:generate": "prisma generate",
+    "db:validate": "prisma validate",
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "prisma db seed",
+    "user:set-role": "tsx scripts/set-user-role.ts",
+    "test:cart": "tsx scripts/cart-behavior-check.ts"
+  },
+  "devDependencies": {
+    "@prisma/adapter-pg": "^7.9.1",
+    "@prisma/client": "^7.9.1",
+    "argon2": "^0.45.1",
+    "concurrently": "^9.1.0",
+    "dotenv": "^17.4.2",
+    "prisma": "^7.9.1",
+    "tsx": "^4.23.11"
+  },
+  "packageManager": "pnpm@10.28.2",
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=10.0.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["argon2", "esbuild", "prisma"]
+  }
+}
