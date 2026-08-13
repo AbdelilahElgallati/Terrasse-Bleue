@@ -9,7 +9,7 @@ export function AppPromotion({ config }: { config: AppInstallConfig }) {
       <div><p className="eyebrow">Application Terrasse Bleue</p><h2 id="mobile-app-title">Commandez aussi depuis l’application</h2><p>Livraison à Essaouira, commande à emporter, historique et suivi depuis votre téléphone.</p></div>
       {config.url ? <a className="button app-install-button" href={config.url} target="_blank" rel="noopener noreferrer"><span>Ouvrir ou installer l’application</span><Icon name="arrow-right" size={18} /></a> : <p className="app-coming-soon" role="status">Le lien d’installation sera disponible prochainement.</p>}
     </div>
-    <div className={`app-qr ${config.url ? '' : 'app-qr-placeholder'}`}>{config.url ? <img src="/app-install-qr" alt="QR code pour ouvrir la page d’installation de l’application Terrasse Bleue" width={210} height={210} loading="lazy" decoding="async" /> : <Image src="/menu-qr.png" alt="QR code du menu Terrasse Bleue" width={170} height={170} />}<small>{config.url ? 'Scannez avec un autre appareil' : 'Scannez pour retrouver notre carte'}</small></div>
+    {config.url ? <div className="app-qr"><img src="/app-install-qr" alt="QR code pour ouvrir la page d’installation de l’application Terrasse Bleue" width={210} height={210} loading="lazy" decoding="async" /><small>Scannez avec un autre appareil</small></div> : null}
   </section>;
 }
 
