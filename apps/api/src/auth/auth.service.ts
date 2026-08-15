@@ -6,7 +6,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as argon2 from 'argon2';
-import { randomUUID } from 'node:crypto';
+import { createHash, randomUUID, timingSafeEqual } from 'node:crypto';
 import { Role } from '../../../../prisma/generated/client/enums';
 import { PrismaService } from '../prisma/prisma.service';
 import type { AuthUser } from '../common/auth-user';
@@ -22,6 +22,40 @@ const publicUser = {
   role: true,
   createdAt: true,
 } as const;
+
+const REFRESH_HASH_PREFIX = 'sha256:';
+
+function hashRefreshToken(token: string) {
+  return `${REFRESH_HASH_PREFIX}${createHash('sha256').update(token).digest('base64url')}`;
+}
+
+async function verifyRefreshToken(storedHash: string, token: string) {
+  if (!storedHash.startsWith(REFRESH_HASH_PREFIX)) {
+    // Keep sessions created before the fast refresh-token hashing migration valid.
+    return argon2.verify(storedHash, token);
+  }
+  const actual = Buffer.from(storedHash);
+  const expected = Buffer.from(hashRefreshToken(token));
+  return actual.length === expected.length && timingSafeEqual(actual, expected);
+}
+
+function toPublicUser(user: {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string | null;
+  role: Role;
+  createdAt: Date;
+}) {
+  return {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    phone: user.phone ?? null,
+    role: user.role,
+    createdAt: user.createdAt,
+  };
+}
 
 @Injectable()
 export class AuthService {
@@ -100,7 +134,7 @@ export class AuthService {
     });
     if (
       !user?.refreshTokenHash ||
-      !(await argon2.verify(user.refreshTokenHash, refreshToken))
+      !(await verifyRefreshToken(user.refreshTokenHash, refreshToken))
     )
       throw new UnauthorizedException('Session expirée.');
     return this.issueTokens(user);
@@ -126,7 +160,7 @@ export class AuthService {
     role: Role;
     name: string;
     phone?: string | null;
-    createdAt?: Date;
+    createdAt: Date;
   }) {
     const payload: AuthUser = {
       id: user.id,
@@ -135,26 +169,22 @@ export class AuthService {
     };
     const accessTtl = this.config.get<string>('JWT_ACCESS_TTL') ?? '15m';
     const refreshTtl = this.config.get<string>('JWT_REFRESH_TTL') ?? '7d';
-    const accessToken = await this.jwt.signAsync(payload, {
-      secret: this.config.getOrThrow('JWT_ACCESS_SECRET'),
-      expiresIn: accessTtl as never,
-    });
-    const refreshToken = await this.jwt.signAsync(payload, {
-      secret: this.config.getOrThrow('JWT_REFRESH_SECRET'),
-      expiresIn: refreshTtl as never,
-    });
+    const [accessToken, refreshToken] = await Promise.all([
+      this.jwt.signAsync(payload, {
+        secret: this.config.getOrThrow('JWT_ACCESS_SECRET'),
+        expiresIn: accessTtl as never,
+      }),
+      this.jwt.signAsync(payload, {
+        secret: this.config.getOrThrow('JWT_REFRESH_SECRET'),
+        expiresIn: refreshTtl as never,
+      }),
+    ]);
     await this.prisma.user.update({
       where: { id: user.id },
       data: {
-        refreshTokenHash: await argon2.hash(refreshToken, {
-          type: argon2.argon2id,
-        }),
+        refreshTokenHash: hashRefreshToken(refreshToken),
       },
     });
-    const safe = await this.prisma.user.findUniqueOrThrow({
-      where: { id: user.id },
-      select: publicUser,
-    });
-    return { user: safe, accessToken, refreshToken };
+    return { user: toPublicUser(user), accessToken, refreshToken };
   }
 }

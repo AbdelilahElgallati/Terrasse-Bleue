@@ -47,6 +47,10 @@ describe('AuthService', () => {
       'Password123!',
     );
     expect(result.user).toEqual(safeUser);
+    expect(prisma.user.findUniqueOrThrow).not.toHaveBeenCalled();
+    expect(prisma.user.update.mock.calls[0][0].data.refreshTokenHash).toMatch(
+      /^sha256:/,
+    );
   });
   it('rejects duplicate email', async () => {
     const { service, prisma } = setup();
@@ -105,6 +109,24 @@ describe('AuthService', () => {
     });
     prisma.user.update.mockResolvedValue({});
     prisma.user.findUniqueOrThrow.mockResolvedValue(safeUser);
+    await expect(service.refresh(refreshToken)).resolves.toMatchObject({
+      user: safeUser,
+    });
+  });
+  it('refreshes a token stored with the fast hash format', async () => {
+    const { service, prisma, jwt } = setup();
+    const refreshToken = 'refresh-token-value-long';
+    jwt.verifyAsync.mockResolvedValue({
+      id: safeUser.id,
+      email: safeUser.email,
+      role: Role.CUSTOMER,
+    });
+    prisma.user.findUnique.mockResolvedValue({
+      ...safeUser,
+      refreshTokenHash:
+        'sha256:xy6RjXINV_fjwp-I_lxPC9H-fks7n8BDZAIIaA7LlpY',
+    });
+    prisma.user.update.mockResolvedValue({});
     await expect(service.refresh(refreshToken)).resolves.toMatchObject({
       user: safeUser,
     });
