@@ -1,0 +1,736 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{enumitem}
+
+% Page geometry
+\geometry{margin=2cm}
+
+% Colors
+\definecolor{primaryblue}{RGB}{18,59,74}
+\definecolor{turquoise}{RGB}{44,140,140}
+\definecolor{terracotta}{RGB}{217,120,91}
+
+% Headers
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textbf{Terrasse Bleue - Résumé Projet}}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% Section formatting
+\titleformat{\section}{\Large\bfseries\color{primaryblue}}{\thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries\color{turquoise}}{\thesubsection}{1em}{}
+
+% Document
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+    
+    {\Huge\bfseries\color{primaryblue} TERRASSE BLEUE}
+    
+    \vspace{1cm}
+    
+    {\Large Plateforme de Commande Mobile et Gestion Restaurant}
+    
+    \vspace{1.5cm}
+    
+    {\large\bfseries Résumé Technique et Commercial Complet}
+    
+    \vspace{2cm}
+    
+    \begin{tabular}{ll}
+        \textbf{Version :} & Full V1 \\
+        \textbf{Date :} & Août 2026 \\
+        \textbf{Équipe :} & 2 développeurs \\
+        \textbf{Durée :} & 2,5 à 3 mois \\
+        \textbf{Statut :} & Document de cadrage \\
+    \end{tabular}
+    
+    \vfill
+    
+    {\large Application Mobile + Dashboard Restaurant + API Backend}
+    
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Vue d'Ensemble du Projet}
+
+\subsection{Contexte et Objectifs}
+
+Terrasse Bleue est un café-restaurant situé à Essaouira, Maroc, qui souhaite digitaliser ses commandes pour améliorer l'expérience client et optimiser ses opérations.
+
+\textbf{Objectifs principaux :}
+\begin{itemize}
+    \item Digitaliser la consultation du menu
+    \item Permettre la prise de commandes via application mobile
+    \item Réduire les erreurs de commande manuelle
+    \item Offrir une interface de gestion pour le personnel
+    \item Permettre le paiement en ligne sécurisé
+    \item Assurer le suivi en temps réel des commandes
+\end{itemize}
+
+\subsection{Applications Développées}
+
+Le système comprend trois applications principales :
+\begin{enumerate}
+    \item \textbf{Application Mobile Client} (React Native + Expo)
+    \item \textbf{Dashboard Restaurant/Admin} (Next.js)
+    \item \textbf{Menu Public} (Next.js avec QR Code)
+    \item \textbf{API Backend} (NestJS)
+\end{enumerate}
+
+\section{Architecture Technique}
+
+\subsection{Stack Technologique Complète}
+
+\begin{longtable}{|p{4cm}|p{4cm}|p{6cm}|}
+\hline
+\textbf{Composant} & \textbf{Technologie} & \textbf{Justification} \\
+\hline
+Application Mobile & React Native + Expo & Base commune Android/iOS, développement rapide \\
+\hline
+Navigation Mobile & Expo Router & Navigation structurée adaptée à Expo \\
+\hline
+État Serveur & TanStack Query & Cache, synchronisation, gestion des erreurs \\
+\hline
+État Local & Zustand & Solution légère pour le panier \\
+\hline
+Administration & Next.js + TypeScript & Interface performante et responsive \\
+\hline
+Menu Public & Next.js & SEO, accès sans installation \\
+\hline
+API Backend & NestJS & Architecture modulaire, WebSocket intégré \\
+\hline
+Base de Données & PostgreSQL & Transactions et intégrité \\
+\hline
+ORM & Prisma & Schéma typé, migrations sécurisées \\
+\hline
+Temps Réel & Socket.IO & Mises à jour immédiates \\
+\hline
+Authentification & JWT + Refresh Token & Compatible mobile/web \\
+\hline
+Stockage Images & Cloudflare R2 / S3 & Performance et coûts optimisés \\
+\hline
+Paiement & Adaptateur CMI & Évite le couplage à un seul prestataire \\
+\hline
+Notifications Push & Expo Notifications & Intégré à l'écosystème Expo \\
+\hline
+E-mail & Brevo / Resend & Messages transactionnels \\
+\hline
+\end{longtable}
+
+\subsection{Architecture de Production}
+
+\begin{center}
+\begin{tabular}{c}
+\textbf{CLIENTS} \\
+\hline
+Mobile Expo (Android/iOS) | Menu Public | Admin/Kitchen \\
+\hline
+HTTPS / Socket.IO \\
+\hline
+Cloudflare / DNS / TLS \\
+\hline
+API NestJS \\
+\hline
+PostgreSQL | Object Storage | Services Externes \\
+données métier | images produits | paiement/push/email \\
+\end{tabular}
+\end{center}
+
+\section{Fonctionnalités Principales}
+
+\subsection{Application Mobile Client}
+
+\textbf{Authentification :}
+\begin{itemize}
+    \item Inscription / Connexion
+    \item Mot de passe oublié
+    \item Gestion du profil
+\end{itemize}
+
+\textbf{Menu et Commandes :}
+\begin{itemize}
+    \item Consultation du menu par catégories
+    \item Recherche et filtrage des produits
+    \item Gestion du panier (ajout, modification, suppression)
+    \item Checkout avec choix du mode de commande
+    \item Paiement en ligne sécurisé
+    \item Suivi en temps réel des commandes
+\end{itemize}
+
+\subsection{Dashboard Restaurant}
+
+\textbf{Gestion des Commandes :}
+\begin{itemize}
+    \item Vue Kanban des commandes (Nouvelles → Confirmées → En Préparation → Prêtes → Terminées)
+    \item Acceptation/Refus des commandes
+    \item Mise à jour des statuts en temps réel
+    \item Historique complet des commandes
+\end{itemize}
+
+\textbf{Gestion du Menu :}
+\begin{itemize}
+    \item Création/modification des catégories et produits
+    \item Gestion des prix et disponibilités
+    \item Upload d'images
+    \item Gestion des options et variantes
+\end{itemize}
+
+\subsection{Cycle de Vie d'une Commande}
+
+\begin{center}
+\begin{tabular}{c}
+PENDING \\
+$\downarrow$ \\
+CONFIRMED \\
+$\downarrow$ \\
+PREPARING \\
+$\downarrow$ \\
+READY \\
+$\downarrow$ \\
+COMPLETED
+\end{tabular}
+\end{center}
+
+États alternatifs : CANCELLED, PAYMENT\_FAILED, REFUNDED
+
+Pour livraison : OUT\_FOR\_DELIVERY → DELIVERED
+
+\section{Sécurité et Paiement}
+
+\subsection{Mesures de Sécurité}
+
+\begin{itemize}
+    \item \textbf{Authentification :} JWT avec rotation des refresh tokens
+    \item \textbf{Mots de passe :} Hashage Argon2id
+    \item \textbf{API :} HTTPS obligatoire, validation DTO, rate limiting
+    \item \textbf{RBAC :} Rôles CUSTOMER, STAFF, MANAGER, SUPER\_ADMIN
+    \item \textbf{Audit :} Journal des actions sensibles
+\end{itemize}
+
+\subsection{Paiement en Ligne}
+
+\textbf{Architecture Abstraction :}
+\begin{center}
+Mobile App → Backend API → Payment Service → CMI/Provider
+\end{center}
+
+\textbf{Processus de Paiement CMI :}
+\begin{enumerate}
+    \item Client finalise sa commande dans l'app
+    \item Backend crée une transaction CMI avec montant et référence
+    \item Client redirigé vers interface sécurisée CMI (3D Secure)
+    \item CMI traite le paiement et envoie webhook de confirmation
+    \item Backend vérifie la signature du webhook
+    \item Commande confirmée et restaurant notifié
+    \item Client reçoit confirmation de paiement
+\end{enumerate}
+
+\textbf{Coûts CMI (estimatifs - à confirmer) :}
+\begin{itemize}
+    \item \textbf{Frais d'ouverture compte :} 1 000 - 2 000 MAD
+    \item \textbf{Commission par transaction :} 2,5\% - 3,5\% + 2-5 MAD fixe
+    \item \textbf{Abonnement mensuel :} 50 - 200 MAD/mois
+    \item \textbf{Frais techniques intégration :} 500 - 1 500 MAD (une fois)
+\end{itemize}
+
+\textbf{Règles de Sécurité :}
+\begin{itemize}
+    \item Aucune donnée bancaire stockée côté Terrasse Bleue
+    \item Confirmation serveur obligatoire via webhook signé
+    \item Chiffrement TLS pour toutes communications
+    \item Idempotence pour éviter les doubles paiements
+    \item Support des remboursements via API CMI
+    \item Journal d'audit de toutes les transactions
+\end{itemize}
+
+\section{Coûts d'Infrastructure et Hébergement}
+
+\subsection{Comparaison des Plans}
+
+\begin{longtable}{|p{4cm}|p{4cm}|p{4cm}|}
+\hline
+\textbf{Service} & \textbf{Plan Gratuit/Simple} & \textbf{Plan Pro/Production} \\
+\hline
+API (Render) & Free (limitations) & Starter : 70 MAD/mois \\
+\hline
+Base de données (Neon) & Free : 0.5GB & Launch : 50-250 MAD/mois \\
+\hline
+Hébergement Web (Vercel) & Hobby (limité) & Pro : 200 MAD/mois \\
+\hline
+Stockage Images (R2) & Free : 10GB & Payant au-delà \\
+\hline
+E-mail transactionnel & Free (limites) & 0-150 MAD/mois \\
+\hline
+Monitoring & Gratuit de base & 0-150 MAD/mois \\
+\hline
+Domaine & - & 120-400 MAD/an \\
+\hline
+\textbf{Total mensuel} & \textbf{0 MAD} & \textbf{350-1000 MAD} \\
+\hline
+\end{longtable}
+
+\subsection{Budget Recommandé au Client}
+
+\begin{itemize}
+    \item \textbf{Infrastructure mensuelle :} 300-500 MAD/mois
+    \item \textbf{Domaine :} 300 MAD/an
+    \item \textbf{Google Play Console :} 250 MAD (une fois)
+    \item \textbf{Apple Developer :} 990 MAD/an
+\end{itemize}
+
+\textbf{Première année avec iOS :} ≈ 5 140 MAD
+
+\subsection{Coûts Non Compris}
+
+\textbf{Frais CMI et Paiement :}
+\begin{itemize}
+    \item Ouverture compte marchand CMI : 1 000 - 2 000 MAD
+    \item Commission par transaction : 2,5\% - 3,5\% + 2-5 MAD fixe
+    \item Abonnement CMI mensuel : 50 - 200 MAD/mois
+    \item Frais techniques CMI : 500 - 1 500 MAD (setup)
+\end{itemize}
+
+\textbf{Autres Coûts :}
+\begin{itemize}
+    \item Frais bancaires additionnels
+    \item SMS et notifications premium au-delà des quotas
+    \item Photographie professionnelle des produits
+    \item Matériel (tablettes, imprimantes, réseau)
+    \item Maintenance applicative après garantie
+    \item Marketing et publicité
+    \item Formation supplémentaire du personnel
+    \item Support technique étendu
+\end{itemize}
+
+\section{Estimation du Projet}
+
+\subsection{Fourchettes de Prix Freelance}
+
+\begin{longtable}{|p{4cm}|p{8cm}|p{3cm}|}
+\hline
+\textbf{Offre} & \textbf{Contenu} & \textbf{Prix (MAD)} \\
+\hline
+MVP Basique & Auth, menu, panier, commandes simples, admin basique & 25 000 - 35 000 \\
+\hline
+Version Standard & MVP + paiement CMI, notifications, gestion produits, suivi temps réel & 35 000 - 50 000 \\
+\hline
+Version Complète & Standard + rapports, multi-rôles, stockage média, CI/CD, tests & 50 000 - 70 000 \\
+\hline
+\end{longtable}
+
+\subsection{Proposition Commerciale Réaliste}
+
+\begin{center}
+\boxed{
+\begin{tabular}{l}
+\textbf{Projet V1 Recommandée : 40 000 - 55 000 MAD} \\
+Infrastructure et stores : à la charge du client (≈5000 MAD/an) \\
+Frais CMI et setup : à la charge du client (≈3000 MAD setup) \\
+Maintenance : 1000-2000 MAD/mois (optionnel) \\
+\end{tabular}
+}
+\end{center}
+
+\textbf{Détail Coûts par Développeur Freelance :}
+\begin{itemize}
+    \item Taux horaire freelance : 80-120 MAD/h
+    \item Durée estimée : 400-600 heures (2 dev × 10-12 semaines)
+    \item Marge projet et risques : 15-25\%
+    \item Formation et support inclus : 30 jours
+\end{itemize}
+
+\textbf{Budget Total Client Première Année (réaliste) :}
+\begin{itemize}
+    \item Développement : 40 000 - 55 000 MAD
+    \item Infrastructure : 5 000 MAD
+    \item CMI setup + abonnement : 3 000 MAD
+    \item \textbf{Total estimé : 48 000 - 63 000 MAD}
+\end{itemize}
+
+\subsection{Échéancier de Paiement}
+
+\begin{longtable}{|p{6cm}|p{3cm}|}
+\hline
+\textbf{Jalon} & \textbf{Pourcentage} \\
+\hline
+Signature et lancement & 20\% \\
+\hline
+Validation UX et architecture & 20\% \\
+\hline
+Parcours commande fonctionnel & 25\% \\
+\hline
+Administration, paiement, staging & 20\% \\
+\hline
+Recette et livraison & 15\% \\
+\hline
+\end{longtable}
+
+\section{Planning de Développement}
+
+\subsection{Équipe et Durée Réaliste}
+
+\begin{itemize}
+    \item \textbf{Équipe :} 2 développeurs freelance
+    \item \textbf{Durée :} 10-12 semaines (temps partiel)
+    \item \textbf{Capacité :} 20h/semaine/dev = 400-480h totales
+    \item \textbf{Flexibilité :} Adaptation selon disponibilité client
+\end{itemize}
+
+\subsection{Planning Adapté sur 10 Semaines}
+
+\begin{longtable}{|p{2cm}|p{3cm}|p{9cm}|}
+\hline
+\textbf{Semaine} & \textbf{Phase} & \textbf{Livrables Principaux} \\
+\hline
+1 & Cadrage & Réponses questions, périmètre défini, backlog Jira créé \\
+\hline
+2 & Architecture & Maquettes approuvées, modèle DB, environnements \\
+\hline
+3-4 & Base & Auth, menu, produits, panier fonctionnel \\
+\hline
+5-6 & Commandes & Checkout, création commandes, statuts de base \\
+\hline
+7 & Admin & Dashboard restaurant, gestion commandes \\
+\hline
+8 & Paiement & Intégration CMI, tests sandbox \\
+\hline
+9 & Finition & Notifications, temps réel, tests \\
+\hline
+10 & Livraison & Recette, formation, déploiement production \\
+\hline
+\end{longtable}
+
+\section{Questions Essentielles pour le Client}
+
+\subsection{Votre Café et Vos Clients}
+
+\begin{enumerate}
+    \item Combien de clients servez-vous par jour actuellement ?
+    \item À quelles heures avez-vous le plus de monde ?
+    \item Vos clients sont-ils plutôt des locaux ou des touristes ?
+    \item Comment prennent-ils leurs commandes maintenant ? (au comptoir, serveur à table)
+    \item Quels problèmes rencontrez-vous avec le système actuel ?
+    \item Vos clients vous demandent-ils souvent s'ils peuvent commander en ligne ?
+    \item Combien de temps un client attend-il en moyenne pour commander ?
+    \item Y a-t-il des heures où vous refusez des clients par manque de place ?
+\end{enumerate}
+
+\subsection{Services que Vous Voulez Offrir}
+
+\begin{enumerate}[resume]
+    \item Voulez-vous que les clients commandent pour manger sur place ?
+    \item Voulez-vous proposer des commandes à emporter ?
+    \item Voulez-vous faire de la livraison ? Si oui, dans quels quartiers ?
+    \item Les clients doivent-ils créer un compte ou peuvent-ils commander directement ?
+    \item Voulez-vous numéroter vos tables pour que les clients commandent à table ?
+    \item Acceptez-vous les commandes à l'avance ? (pour récupérer plus tard)
+    \item Combien de commandes pouvez-vous préparer simultanément ?
+    \item Si livraison : combien de temps faut-il pour livrer en ville ?
+    \item Si livraison : avez-vous déjà un livreur ou faut-il en trouver un ?
+    \item Voulez-vous un système de réservation de tables dans l'application ?
+    \item Les clients peuvent-ils annuler leur commande ? Jusqu'à quand ?
+    \item Que se passe-t-il si un produit n'est plus disponible après la commande ?
+\end{enumerate}
+
+\subsection{Votre Menu et Vos Prix}
+
+\begin{enumerate}[resume]
+    \item Votre menu est-il finalisé avec tous les prix ?
+    \item Combien avez-vous de catégories ? (petit-déjeuner, boissons, pâtisseries...)
+    \item Combien de produits au total proposez-vous ?
+    \item Avez-vous des photos de vos plats et boissons ?
+    \item Certains produits ont-ils des options ? (taille café, cuisson viande, extras...)
+    \item Proposez-vous des menus ou formules à prix fixe ?
+    \item Vos prix changent-ils selon l'heure ? (happy hour, petit-déjeuner...)
+    \item Dans quelles langues voulez-vous l'application ? (français, arabe, anglais)
+    \item Avez-vous des produits qui ne sont disponibles qu'à certains moments ?
+    \item Y a-t-il des produits pour lesquels vous manquez souvent d'ingrédients ?
+    \item Avez-vous des options végétariennes/végan clairement identifiées ?
+\end{enumerate}
+
+\subsection{Paiement}
+
+\begin{enumerate}[resume]
+    \item Acceptez-vous déjà les cartes bancaires dans votre café ?
+    \item Avez-vous un compte pour paiement en ligne (CMI) ou faut-il le créer ?
+    \item Êtes-vous d'accord pour payer 2,5 à 3,5\% de commission sur chaque paiement ?
+    \item Quel montant minimum voulez-vous pour les paiements en ligne ?
+    \item Les clients pourront-ils aussi payer en espèces sur place ?
+    \item Voulez-vous proposer le paiement à la commande ou à la livraison/récupération ?
+    \item Comment gérez-vous actuellement les factures et la comptabilité ?
+    \item Faut-il éditer des factures automatiquement pour les commandes ?
+    \item En cas de problème de paiement, qui s'en occupe ?
+    \item Acceptez-vous les pourboires via l'application ?
+\end{enumerate}
+
+\subsection{Organisation de Votre Équipe}
+
+\begin{enumerate}[resume]
+    \item Combien d'employés travaillent avec vous ?
+    \item Qui sera responsable de voir les nouvelles commandes ? (vous, employé cuisine, serveur)
+    \item Qui peut accepter ou refuser une commande ?
+    \item Avez-vous une tablette ou un ordinateur pour gérer les commandes ?
+    \item Combien de personnes faut-il former sur l'application ?
+    \item Y a-t-il quelqu'un qui travaille en permanence en cuisine ?
+    \item Comment organisez-vous le travail pendant les heures de pointe ?
+    \item Avez-vous une imprimante pour imprimer les tickets de commande ?
+    \item Qui gère actuellement les stocks et les approvisionnements ?
+    \item Y a-t-il des moments où le café est fermé mais pourrait accepter des commandes ?
+\end{enumerate}
+
+\subsection{Communication et Notifications}
+
+\begin{enumerate}[resume]
+    \item Voulez-vous envoyer des notifications aux clients sur l'état de leur commande ?
+    \item Préférez-vous les notifications dans l'app, par SMS ou email ?
+    \item Voulez-vous pouvoir envoyer des messages promotionnels aux clients ?
+    \item Faut-il alerter le restaurant quand une nouvelle commande arrive ?
+    \item Comment voulez-vous être contacté en cas de problème technique ?
+    \item Voulez-vous que les clients puissent laisser des avis/notes ?
+    \item Souhaitez-vous un système de fidélité pour récompenser les clients réguliers ?
+\end{enumerate}
+
+\subsection{Aspects Pratiques et Logistiques}
+
+\begin{enumerate}[resume]
+    \item À quelle heure ouvrez-vous et fermez-vous chaque jour ?
+    \item Êtes-vous ouverts 7 jours sur 7 ?
+    \item Y a-t-il des jours où vous fermez exceptionnellement ?
+    \item Combien de temps faut-il pour préparer une commande moyenne ?
+    \item Avez-vous assez de place pour stocker les commandes à emporter ?
+    \item Si livraison : où stockez-vous les commandes en attente ?
+    \item Que faites-vous si une commande n'est pas récupérée ?
+    \item Avez-vous un numéro de téléphone dédié pour les commandes ?
+\end{enumerate}
+
+\subsection{Timing et Budget}
+
+\begin{enumerate}[resume]
+    \item Quand voulez-vous que l'application soit prête ?
+    \item Quel est votre budget total pour ce projet ?
+    \item Voulez-vous l'application sur Android, iPhone ou les deux ?
+    \item Après la livraison, voulez-vous un contrat de maintenance ?
+    \item Combien êtes-vous prêt à payer par mois pour l'hébergement ?
+    \item Voulez-vous d'abord une version simple puis l'améliorer ?
+    \item À partir de quand voulez-vous commencer à recevoir des commandes en ligne ?
+\end{enumerate}
+
+% \subsection{Vision Future}
+
+% \begin{enumerate}[resume]
+%     \item Pensez-vous ouvrir d'autres cafés à l'avenir ?
+%     \item Voulez-vous proposer des cours de cuisine ou des événements ?
+%     \item Envisagez-vous de vendre vos produits dans d'autres endroits ?
+%     \item Voulez-vous que l'application puisse évoluer avec de nouvelles fonctionnalités ?
+%     \item Souhaitez-vous intégrer l'app avec votre caisse actuelle (si vous en avez une) ?
+%     \item Voulez-vous des statistiques sur vos ventes et vos clients ?
+%     \item Pensez-vous proposer des abonnements ou des cartes prépayées ?
+% \end{enumerate}
+
+\section{Risques et Mesures}
+
+\subsection{Risques Majeurs Identifiés}
+
+\begin{longtable}{|p{5cm}|p{9cm}|}
+\hline
+\textbf{Risque} & \textbf{Mesure Proposée} \\
+\hline
+Retard intégration CMI & Mock contractuel + intégration isolée en fin de projet \\
+\hline
+Menu/photos non validés & Date limite client + contenu provisoire clairement marqué \\
+\hline
+Changements de périmètre & Procédure Change Request chiffrée \\
+\hline
+Publication stores retardée & Création comptes client dès semaine 1 \\
+\hline
+Trop de fonctionnalités & Priorités P0/P1/P2 strictement respectées \\
+\hline
+Disponibilité client limitée & Réunions hebdomadaires + délais de validation contractuels \\
+\hline
+\end{longtable}
+
+\section{Périmètre V1 vs Évolutions}
+
+\subsection{Inclus dans V1}
+
+\begin{itemize}
+    \item Authentification complète
+    \item Menu et produits avec options
+    \item Commandes sur place, à emporter, livraison simple
+    \item Administration commandes et catalogue
+    \item Paiement en ligne (1 prestataire)
+    \item Notifications push et e-mail
+    \item Suivi temps réel
+    \item Rôles et permissions de base
+    \item Builds Android et iOS
+    \item Déploiement production avec monitoring
+\end{itemize}
+
+\subsection{Hors Périmètre V1 (Évolutions V2)}
+
+\begin{itemize}
+    \item Application chauffeur dédiée
+    \item Gestion multi-restaurant
+    \item Programme de fidélité avancé
+    \item Recommandations IA
+    \item Réservation de tables
+    \item Intégration POS/caisse complexe
+    \item Analytics avancées avec BI
+    \item Marketplace multi-restaurants
+\end{itemize}
+
+\section{Critères d'Acceptation}
+
+La V1 sera validée quand :
+
+\begin{enumerate}
+    \item Utilisateur peut créer un compte et se connecter
+    \item Menu consultable avec recherche et filtres
+    \item Produit ajouté au panier avec options
+    \item Commande passée et payée en ligne
+    \item Restaurant reçoit commande instantanément
+    \item Statuts mis à jour en temps réel côté client
+    \item Manager peut gérer produits et prix
+    \item Permissions respectées selon les rôles
+    \item Applications Android et iOS publiées
+    \item Sauvegardes automatiques configurées
+\end{enumerate}
+
+\section{Maintenance et Support}
+
+\subsection{Garantie Incluse}
+
+\begin{itemize}
+    \item 60 jours de corrections gratuites après livraison
+    \item Formation du personnel (2-3 personnes)
+    \item Documentation administrateur et utilisateur
+    \item Support technique pendant la mise en route
+\end{itemize}
+
+\section{Méthodologie Jira et User Stories}
+
+\subsection{Organisation du Backlog}
+
+\textbf{Epic Structure proposée :}
+\begin{enumerate}
+    \item \textbf{EPIC-001 :} Authentification et Profils Utilisateurs
+    \item \textbf{EPIC-002 :} Catalogue et Navigation Menu
+    \item \textbf{EPIC-003 :} Panier et Processus de Commande
+    \item \textbf{EPIC-004 :} Paiement et Intégration CMI
+    \item \textbf{EPIC-005 :} Gestion Restaurant et Admin
+    \item \textbf{EPIC-006 :} Notifications et Communication
+    \item \textbf{EPIC-007 :} Suivi Temps Réel et Statuts
+    \item \textbf{EPIC-008 :} Infrastructure et Déploiement
+\end{enumerate}
+
+\textbf{Exemple User Stories EPIC-003 :}
+\begin{itemize}
+    \item US-031 : En tant que client, je veux ajouter un produit au panier pour préparer ma commande
+    \item US-032 : En tant que client, je veux modifier la quantité d'un article pour ajuster ma commande
+    \item US-033 : En tant que client, je veux voir le total de mon panier pour contrôler le montant
+    \item US-034 : En tant que client, je veux sauvegarder mon panier pour continuer plus tard
+\end{itemize}
+
+\subsection{Critères d'Acceptation Standards}
+
+\textbf{Template pour chaque User Story :}
+\begin{itemize}
+    \item \textbf{Fonctionnel :} Scénarios GIVEN/WHEN/THEN
+    \item \textbf{Interface :} Maquettes/wireframes validées
+    \item \textbf{Performance :} Temps de réponse < 2s
+    \item \textbf{Sécurité :} Validation des données, permissions
+    \item \textbf{Mobile :} Compatible iOS/Android
+    \item \textbf{Tests :} Unit tests + tests d'intégration
+\end{itemize}
+
+\subsection{Priorités et Estimation}
+
+\begin{longtable}{|p{2cm}|p{4cm}|p{3cm}|p{4cm}|}
+\hline
+\textbf{Priorité} & \textbf{Description} & \textbf{Effort} & \textbf{Exemple Epic} \\
+\hline
+P0 (Critical) & MVP fonctionnel & 1-5 points & Auth, Menu, Commande \\
+\hline
+P1 (High) & Fonctionnalités essentielles & 3-8 points & Paiement, Admin \\
+\hline
+P2 (Medium) & Améliorations UX & 2-5 points & Notifications, Rapports \\
+\hline
+P3 (Low) & Nice-to-have & 1-3 points & Analytics, Optimisations \\
+\hline
+\end{longtable}
+
+\subsection{Maintenance Adaptée}
+
+\begin{longtable}{|p{4cm}|p{3cm}|p{6cm}|}
+\hline
+\textbf{Plan} & \textbf{Prix/mois} & \textbf{Services Inclus} \\
+\hline
+Basic & 800 MAD & Monitoring, sauvegardes, mises à jour sécurité \\
+\hline
+Standard & 1 500 MAD & Basic + support e-mail, corrections mineures \\
+\hline
+Premium & 2 500 MAD & Standard + évolutions mineures, support prioritaire \\
+\hline
+\end{longtable}
+
+\section{Conclusion et Recommandations}
+
+\subsection{Approche Recommandée}
+
+\begin{enumerate}
+    \item \textbf{Phase de cadrage intensive (Semaine 1)} avec validation de toutes les questions détaillées
+    \item \textbf{Développement MVP en 6 semaines} couvrant les fonctionnalités essentielles
+    \item \textbf{Intégration paiement CMI en 2 semaines} avec tests approfondis
+    \item \textbf{Finalisation et déploiement en 2 semaines} avec formation incluse
+\end{enumerate}
+
+\subsection{Facteurs Critiques de Succès}
+
+\begin{itemize}
+    \item \textbf{Engagement client :} Réponses rapides aux questions (< 48h)
+    \item \textbf{Contenu prêt :} Menu, photos, textes disponibles semaine 2
+    \item \textbf{Comptes techniques :} Apple/Google/CMI créés avant semaine 8
+    \item \textbf{Budget flexible :} Possibilité d'ajustement en cours de projet
+\end{itemize}
+
+\subsection{Livrables Garantis}
+
+\begin{itemize}
+    \item Application mobile Android et iOS publiée
+    \item Dashboard restaurant web responsive
+    \item API backend sécurisée et documentée
+    \item Paiement en ligne CMI fonctionnel
+    \item Formation du personnel (2-3 personnes)
+    \item 30 jours de support post-livraison inclus
+    \item Code source et documentation technique
+\end{itemize}
+
+\vfill
+
+\begin{center}
+\textbf{Proposition Finale : 40 000 - 55 000 MAD}
+
+\textcolor{blue}{\textbf{Prix adapté au marché freelance marocain}}
+
+\textit{Document préparatoire — Validation client requise avant développement}
+\end{center}
+
+\end{document}

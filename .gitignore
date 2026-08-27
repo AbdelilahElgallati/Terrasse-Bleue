@@ -50,3 +50,8 @@ Terrasse_Bleue_7-Day_Developer_Cahier_des_Charges.md
 apps/admin/.env.example
 apps/admin/.env.example
 apps/api/.env.example
+/tmp
+*.aux
+*.out
+*.toc
+*.svg

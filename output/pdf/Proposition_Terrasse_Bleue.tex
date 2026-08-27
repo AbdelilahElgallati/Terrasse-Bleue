@@ -1,0 +1,683 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{lmodern}
+\usepackage{geometry}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{tabularx,longtable,booktabs,array,multirow}
+\usepackage[table]{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{lastpage}
+\usepackage{tikz}
+
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric}
+
+\geometry{top=2.1cm,bottom=2.0cm,left=1.8cm,right=1.8cm,headheight=15pt}
+\definecolor{navy}{HTML}{123B4A}
+\definecolor{teal}{HTML}{2C8C8C}
+\definecolor{terracotta}{HTML}{D9785B}
+\definecolor{lightblue}{HTML}{EAF3F4}
+\definecolor{lightgray}{HTML}{F3F5F6}
+\definecolor{darkgray}{HTML}{3F4A4D}
+\definecolor{green}{HTML}{26734D}
+\definecolor{amber}{HTML}{A96500}
+\definecolor{red}{HTML}{A63A3A}
+
+\hypersetup{colorlinks=true,linkcolor=navy,urlcolor=teal,pdftitle={Terrasse Bleue - Proposition de projet et cahier des engagements},pdfauthor={Equipe projet Terrasse Bleue}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{navy}\textbf{TERRASSE BLEUE} - Proposition de projet}
+\fancyhead[R]{\small\color{darkgray}Version 1.1}
+\fancyfoot[L]{\scriptsize Document client - Confidentiel}
+\fancyfoot[R]{\scriptsize Page \thepage\ / \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.2pt}
+
+\titleformat{\section}{\Large\bfseries\color{navy}}{\thesection.}{0.55em}{}
+\titleformat{\subsection}{\large\bfseries\color{teal}}{\thesubsection}{0.55em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{darkgray}}{\thesubsubsection}{0.55em}{}
+\titlespacing*{\section}{0pt}{1.25em}{0.55em}
+\titlespacing*{\subsection}{0pt}{1em}{0.4em}
+\setlist[itemize]{leftmargin=1.4em,itemsep=2pt,topsep=3pt}
+\setlist[enumerate]{leftmargin=1.6em,itemsep=2pt,topsep=3pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\renewcommand{\arraystretch}{1.25}
+
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcommand{\tagbox}[2]{\colorbox{#1!14}{\textcolor{#1}{\textbf{\scriptsize #2}}}}
+\newcommand{\Pzero}{\tagbox{red}{P0}}
+\newcommand{\Pone}{\tagbox{amber}{P1}}
+\newcommand{\Ptwo}{\tagbox{teal}{P2}}
+\newcommand{\included}{\tagbox{green}{INCLUS}}
+\newcommand{\optional}{\tagbox{amber}{OPTIONNEL}}
+\newcommand{\client}{\tagbox{navy}{CLIENT}}
+\newcommand{\thirdparty}{\tagbox{terracotta}{TIERS}}
+\newcommand{\confirm}{\tagbox{amber}{A CONFIRMER}}
+\newcommand{\risk}[1]{\colorbox{red!8}{\parbox{0.96\linewidth}{\textbf{Risque :} #1}}}
+\newenvironment{callout}[1]{\par\medskip\noindent\begin{minipage}{\linewidth}\color{navy}\hrule\smallskip\textbf{#1}\par\smallskip\color{black}}{\smallskip\color{navy}\hrule\end{minipage}\par\medskip}
+
+\begin{document}
+\pagenumbering{gobble}
+
+\begin{titlepage}
+\pagecolor{navy}
+\color{white}
+\begin{tikzpicture}[remember picture,overlay]
+  \fill[teal!34] ([xshift=2.2cm,yshift=-1.5cm]current page.north east) circle (5.1cm);
+  \fill[terracotta!92] ([xshift=-1.8cm,yshift=0.4cm]current page.south west) circle (4.0cm);
+  \draw[white!12,line width=18pt] ([xshift=-1cm,yshift=-3.2cm]current page.north west) -- ([xshift=3cm,yshift=-8.2cm]current page.north east);
+\end{tikzpicture}
+
+\vspace*{-0.8cm}
+\begin{center}
+{\setlength{\fboxsep}{10pt}\colorbox{terracotta}{\includegraphics[width=3.3cm]{../../apps/menu/public/terrasse-bleue-logo.png}}}\par
+\vspace{0.55cm}
+{\small\bfseries\textcolor{lightblue}{PROPOSITION COMMERCIALE \textbullet{} VERSION 1.1}}\par
+\vspace{0.65cm}
+{\fontsize{33}{38}\selectfont\bfseries TERRASSE BLEUE}\par
+\vspace{0.28cm}
+{\LARGE\bfseries Plateforme digitale de commande}\par
+\vspace{0.18cm}
+{\large Menu QR/Web, application mobile et gestion restaurant}\par
+\vspace{0.7cm}
+\textcolor{terracotta}{\rule{0.7\linewidth}{2.4pt}}\par
+\vspace{0.65cm}
+{\setlength{\fboxsep}{6pt}
+\colorbox{teal!55}{\textbf{MENU QR / WEB}}\hspace{0.25cm}
+\colorbox{teal!55}{\textbf{APPLICATION MOBILE}}\hspace{0.25cm}
+\colorbox{teal!55}{\textbf{DASHBOARD}}\hspace{0.25cm}
+\colorbox{teal!55}{\textbf{API SÉCURISÉE}}}\par
+\end{center}
+
+\vfill
+{\setlength{\fboxsep}{12pt}
+\noindent\fcolorbox{teal!75}{navy!88}{%
+\begin{minipage}{0.91\linewidth}
+\centering
+{\small FORFAIT DE DÉVELOPPEMENT V1}\par
+\vspace{0.1cm}
+{\fontsize{25}{29}\selectfont\bfseries\textcolor{terracotta}{30 000 MAD}}\par
+\vspace{0.2cm}
+{\small 2 développeurs freelance \textbullet{} 10 à 12 semaines}\par
+\end{minipage}}}
+
+\vspace{0.7cm}
+\begin{tabularx}{\linewidth}{@{}L{3.6cm}Y@{}}
+\textbf{Client} & Terrasse Bleue, Essaouira, Maroc \\
+\textbf{Objet} & Proposition de projet et cahier des engagements \\
+\textbf{Date} & 20 août 2026 \\
+\textbf{Statut} & Proposition soumise à validation du client \\
+\end{tabularx}
+
+\vspace{0.6cm}
+\begin{center}
+{\footnotesize DOCUMENT CLIENT CONFIDENTIEL \textbullet{} Les coûts des prestataires tiers sont détaillés séparément et restent à confirmer auprès d'eux.}
+\end{center}
+\end{titlepage}
+\nopagecolor
+\color{black}
+\pagenumbering{roman}
+
+\section*{Mode d'emploi du document}
+Ce document constitue une proposition de périmètre et un Statement of Work. Il remplace les formulations ambiguës du rapport initial par des responsabilités, livrables et critères de recette vérifiables. La signature de la section 18 vaut approbation du périmètre, sous réserve de compléter les éléments marqués \confirm.
+
+\begin{tabularx}{\linewidth}{@{}L{2.6cm}Y@{}}
+\toprule
+\textbf{Légende} & \textbf{Signification} \\
+\midrule
+\Pzero & Indispensable au lancement de la V1. \\
+\Pone & Important, planifié après stabilisation du parcours critique. \\
+\Ptwo & Amélioration non bloquante, réalisable si la capacité le permet ou en évolution. \\
+\included\quad\optional & Inclus au prix de développement / prestation disponible sur devis. \\
+\client\quad\thirdparty & A fournir ou payer par le client / dépend d'un prestataire externe. \\
+\confirm & Décision, capacité ou prix non encore confirmé. \\
+\bottomrule
+\end{tabularx}
+
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\setcounter{section}{0}
+\section{Executive Summary - Synthèse exécutive}
+Terrasse Bleue est un café-restaurant situé à Essaouira qui souhaite simplifier la consultation du menu, la prise de commande et le suivi en restaurant. Le projet met à disposition des clients un menu QR/Web accessible immédiatement et une application mobile Android/iOS. Le personnel gère le catalogue et les commandes depuis un dashboard centralisé, relié à une API sécurisée.
+
+La V1 vise à réduire les ressaisies manuelles, accélérer la transmission des commandes, rendre leur état visible et permettre un paiement en ligne lorsque l'affiliation CMI est opérationnelle. Les utilisateurs sont les clients du restaurant, le personnel, les managers et l'administrateur technique.
+
+\begin{tabularx}{\linewidth}{@{}L{4cm}Y@{}}
+\toprule
+\textbf{Elément} & \textbf{Proposition} \\
+\midrule
+Canaux client & Menu QR/Web recommandé comme canal principal de lancement; application mobile comme canal complémentaire fidélisant. \\
+Outils restaurant & Dashboard responsive pour commandes, catalogue, disponibilités et utilisateurs autorisés. \\
+Socle & API NestJS, PostgreSQL, stockage média, notifications, temps réel et adaptateur de paiement. \\
+Equipe et durée & 2 développeurs freelance; 10 à 12 semaines, sous réserve des validations et dépendances externes. \\
+Objectif global & Fournir une V1 exploitable, sécurisée, documentée et transmissible, sans dépendre d'une installation mobile pour la première commande. \\
+\bottomrule
+\end{tabularx}
+
+\section{Business Objectives - Objectifs métier}
+\begin{longtable}{@{}L{3.2cm}L{5.1cm}L{5.1cm}L{2.1cm}@{}}
+\toprule
+\textbf{Objectif} & \textbf{Problème} & \textbf{Solution et bénéfice attendu} & \textbf{KPI recommandé} \\
+\midrule
+\endhead
+Menu numérique & Menu papier difficile à actualiser et disponibilité peu visible. & Catalogue centralisé, prix et disponibilité publiés sur Web et mobile; information plus cohérente. & Taux de produits à jour. \\
+Commande en ligne & Prise manuelle sujette aux erreurs et aux temps d'attente. & Panier et commande structurée; moins de ressaisie et transmission plus rapide. & Délai commande-confirmation. \\
+Commande QR & Installation d'une app dissuasive pour un visiteur occasionnel. & Accès immédiat depuis un QR code; expérience plus simple sur place. & Part des commandes QR. \\
+Gestion centralisée & Commandes et catalogue dispersés. & Dashboard unique, vue Kanban et historique; meilleure visibilité opérationnelle. & Commandes sans intervention manuelle. \\
+Paiement en ligne & Paiement séparé du parcours numérique. & Redirection sécurisée vers le prestataire et validation serveur; parcours plus fluide si CMI disponible. & Taux de succès paiement. \\
+Suivi en temps réel & Client incertain sur l'avancement. & Statuts publiés et notifications; moins de demandes d'information. & Délai par étape. \\
+Historique & Difficulté à retrouver une commande ou un incident. & Historique client, journal des changements et tentatives de paiement; traçabilité améliorée. & Incidents résolus avec trace. \\
+Visibilité opérationnelle & Peu de données consolidées sur le flux quotidien. & Liste et historique des commandes; base fiable pour des rapports futurs. & Volume par canal et statut. \\
+\bottomrule
+\end{longtable}
+Les KPI ci-dessus sont des indicateurs recommandés, sans cible contractuelle tant que la volumétrie de référence n'est pas connue.
+
+\section{V1 Scope - Périmètre V1}
+\subsection{Customer Mobile Application - Application mobile client}
+\begin{longtable}{@{}L{1.1cm}L{4.2cm}L{9.8cm}@{}}
+\toprule
+\textbf{Prio.} & \textbf{Fonction} & \textbf{Contenu V1} \\
+\midrule
+\endhead
+\Pzero & Inscription et connexion & Création de compte, connexion, déconnexion et renouvellement de session. \\
+\Pzero & Mot de passe oublié & Demande de réinitialisation et lien à durée limitée par e-mail. \\
+\Pzero & Menu & Catégories, produits, prix, images, détails, options/variantes et disponibilité. \\
+\Pzero & Recherche et filtre & Recherche textuelle et filtrage par catégorie; autres filtres selon données fournies. \\
+\Pzero & Panier & Ajouter, modifier quantité/options, supprimer, recalculer le total. \\
+\Pzero & Checkout & Récapitulatif, coordonnées nécessaires et choix du mode de commande validé au cadrage. \\
+\Pzero & Commande & Création sans doublon, référence, confirmation et gestion des erreurs. \\
+\Pzero & Paiement & Initiation vers le prestataire, retour utilisateur et état vérifié côté serveur. Dépend de CMI. \\
+\Pzero & Suivi & Affichage de l'état opérationnel et mise à jour en temps réel avec repli par rafraîchissement. \\
+\Pone & Historique & Liste et détail des commandes du compte. \\
+\Pone & Notifications & Push et e-mail transactionnel pour événements essentiels. \\
+\Pone & Profil & Lecture et modification des informations autorisées. \\
+\Ptwo & Filtres avancés & Régimes/allergènes uniquement si les données fiables sont fournies. \\
+\bottomrule
+\end{longtable}
+La priorité du paiement est maintenue en P0 car il fait partie de la proposition commerciale, mais sa mise en production reste une dépendance externe. Les fonctions P2 ne retardent pas le lancement.
+
+\subsection{QR / Web Menu - Menu QR/Web}
+\begin{longtable}{@{}L{1.1cm}L{4.2cm}L{9.8cm}@{}}
+\toprule
+\textbf{Prio.} & \textbf{Fonction} & \textbf{Contenu V1} \\
+\midrule
+\endhead
+\Pzero & Accès public & Ouverture par URL ou QR code, sans installation. \\
+\Pzero & Catalogue & Catégories, produits, prix, images, options et disponibilité issus du même backend. \\
+\Pzero & Responsive & Utilisable sur smartphone moderne et navigateur de bureau. \\
+\Pzero & Panier et commande & Même parcours de panier/checkout que le mobile, sous réserve de la décision sur le compte invité. \\
+\Pzero & Paiement & Redirection vers le prestataire et affichage du résultat non probant tant que le serveur n'a pas validé. \\
+\Pone & Recherche & Recherche de produits et filtre par catégorie. \\
+\Pone & QR contextuel & QR générique; numéro de table uniquement si le client confirme la commande à table au cadrage. \\
+\bottomrule
+\end{longtable}
+\begin{callout}{Recommandation de lancement}
+Le menu QR/Web doit être le canal principal de la V1 : il réduit la friction, couvre les touristes et clients occasionnels, et permet de lancer sans attendre l'approbation des stores. L'application mobile n'est pas supprimée; elle constitue un canal supplémentaire pour les clients réguliers, les notifications push et l'historique.
+\end{callout}
+
+\subsection{Restaurant Dashboard - Dashboard restaurant}
+\begin{longtable}{@{}L{1.1cm}L{3.4cm}L{6.7cm}L{4.0cm}@{}}
+\toprule
+\textbf{Prio.} & \textbf{Fonction} & \textbf{Contenu} & \textbf{Rôles} \\
+\midrule
+\endhead
+\Pzero & Authentification & Connexion sécurisée, session et contrôle d'accès. & STAFF, MANAGER, SUPER\_ADMIN \\
+\Pzero & Kanban commandes & Nouvelles, confirmées, préparation, prêtes et terminées; refus/annulation autorisés. & STAFF, MANAGER \\
+\Pzero & Détail commande & Articles, options, canal, horodatages, paiement séparé et coordonnées nécessaires. & STAFF, MANAGER \\
+\Pzero & Changement de statut & Transitions validées et diffusées en temps réel. & STAFF, MANAGER \\
+\Pzero & Catalogue & Créer/modifier catégories, produits, prix, options, images, disponibilité. & MANAGER \\
+\Pzero & Utilisateurs & Créer/désactiver le personnel et attribuer les rôles autorisés. & MANAGER, SUPER\_ADMIN \\
+\Pone & Historique & Recherche et consultation des commandes passées. & MANAGER \\
+\Pone & Notifications & Alerte visuelle/sonore du navigateur selon ses permissions. & STAFF, MANAGER \\
+\Pone & Paramètres & Informations restaurant, horaires et paramètres fonctionnels définis au cadrage. & MANAGER \\
+\Ptwo & Rapports de base & Totaux simples par période/statut, si confirmés au backlog. & MANAGER \\
+\bottomrule
+\end{longtable}
+\textbf{Délimitation des rôles :} STAFF traite les commandes; MANAGER gère aussi le catalogue, les comptes et paramètres; SUPER\_ADMIN réalise les opérations techniques globales. Le rôle CUSTOMER n'accède pas au dashboard.
+
+\clearpage
+\subsection{Backend / API}
+\begin{longtable}{@{}L{1.1cm}L{4cm}L{10cm}@{}}
+\toprule
+\textbf{Prio.} & \textbf{Module} & \textbf{Responsabilité} \\
+\midrule
+\endhead
+\Pzero & Authentification & Comptes, mots de passe, JWT, refresh tokens, réinitialisation. \\
+\Pzero & Autorisation & RBAC, contrôle par ressource et journal des actions sensibles. \\
+\Pzero & Catalogue & Catégories, produits, options, prix, disponibilité et médias. \\
+\Pzero & Commandes & Panier validé côté serveur, calcul, référence, cycle de vie et historique. \\
+\Pzero & Paiements & PaymentService, tentatives, MockPaymentAdapter puis CMIAdapter selon le kit. \\
+\Pzero & Temps réel & Evénements Socket.IO avec récupération HTTP si la connexion temps réel échoue. \\
+\Pzero & Données & PostgreSQL, migrations Prisma, contraintes et sauvegarde selon l'hébergeur. \\
+\Pzero & Fichiers & Téléversement contrôlé vers stockage compatible S3/R2. \\
+\Pone & Notifications & Push Expo et e-mail transactionnel via un fournisseur retenu. \\
+\Pone & Audit & Journal des changements de statut, actions admin et événements de paiement. \\
+\Pone & Documentation & Contrat API et instructions d'environnement/déploiement. \\
+\bottomrule
+\end{longtable}
+
+\section{Technical Architecture - Architecture technique}
+\subsection{Vue d'ensemble}
+\begin{center}
+\begin{tikzpicture}[node distance=7mm and 12mm, every node/.style={font=\small}, box/.style={draw=navy,rounded corners,fill=lightblue,minimum width=31mm,minimum height=9mm,align=center}, ext/.style={draw=terracotta,rounded corners,fill=terracotta!8,minimum width=29mm,minimum height=9mm,align=center}, arr/.style={-{Latex[length=2mm]},thick,draw=teal}]
+\node[box] (mobile) {Application mobile};
+\node[box,right=of mobile] (web) {Menu QR/Web};
+\node[box,right=of web] (dash) {Dashboard restaurant};
+\node[box,below=13mm of web,minimum width=55mm] (api) {API NestJS + Socket.IO};
+\node[box,below left=12mm and -2mm of api] (db) {PostgreSQL};
+\node[box,below=12mm of api] (store) {Stockage médias};
+\node[box,below right=12mm and -2mm of api] (pay) {PaymentService};
+\node[ext,below=10mm of pay] (cmi) {CMI / acquéreur};
+\draw[arr] (mobile) -- (api);
+\draw[arr] (web) -- (api);
+\draw[arr] (dash) -- (api);
+\draw[arr] (api) -- (db);
+\draw[arr] (api) -- (store);
+\draw[arr] (api) -- (pay);
+\draw[arr] (pay) -- (cmi);
+\end{tikzpicture}
+\end{center}
+
+\subsection{Technologies et justification}
+\begin{longtable}{@{}L{3.2cm}L{4.2cm}L{8.2cm}@{}}
+\toprule
+\textbf{Couche} & \textbf{Technologie} & \textbf{Raison} \\
+\midrule
+\endhead
+Mobile & React Native, Expo, Expo Router & Base commune Android/iOS, builds reproductibles et navigation structurée. \\
+Etat client & TanStack Query, Zustand & Synchronisation serveur robuste; panier local simple et isolé. \\
+Web & Next.js, TypeScript & Menu public performant et dashboard responsive avec types partagés. \\
+Backend & NestJS & Modules métier, validation, injection de dépendances et intégration temps réel. \\
+Données & PostgreSQL, Prisma & Transactions, contraintes et migrations versionnées. \\
+Temps réel & Socket.IO & Diffusion rapide des nouveaux événements avec repli HTTP. \\
+Identité & JWT, refresh token rotatif & Compatibilité mobile/web et révocation contrôlée des sessions. \\
+Médias & Volume persistant du VPS Hostinger & Stockage initial centralisé sur le serveur; capacité surveillée et copie de sauvegarde externe obligatoire. \\
+Paiement & PaymentService + adaptateurs & Développement et tests possibles avant CMI, couplage limité au prestataire. \\
+Notifications & Expo Notifications, Brevo ou Resend & Push mobile et e-mails transactionnels; fournisseur final à confirmer. \\
+Déploiement & CI/CD, staging, production & Livraison reproductible, contrôle avant mise en ligne et retour arrière documenté. \\
+Monitoring & Logs structurés, alertes et supervision hébergeur & Diagnostic des erreurs, paiements et incidents d'exploitation. \\
+\bottomrule
+\end{longtable}
+
+\section{Order Management - Gestion des commandes}
+\subsection{Deux états indépendants}
+\begin{tabularx}{\linewidth}{@{}L{7.6cm}Y@{}}
+\toprule
+\textbf{Statut de commande} & \textbf{Statut de paiement} \\
+\midrule
+PENDING - créée, en attente de validation/paiement & PENDING - tentative ouverte ou résultat non confirmé \\
+CONFIRMED - acceptée et, si exigé, paiement validé & PAID - paiement vérifié par le backend \\
+PREPARING - préparation en cours & FAILED - tentative échouée \\
+READY - prête pour service ou retrait & CANCELLED - tentative abandonnée/annulée \\
+OUT\_FOR\_DELIVERY - remise au livreur si livraison validée & REFUNDED - remboursement confirmé \\
+DELIVERED - livrée au client & PARTIALLY\_REFUNDED - remboursement partiel confirmé \\
+COMPLETED - clôturée & Les capacités de remboursement dépendent du prestataire. \\
+CANCELLED - annulée avec motif & \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Cycle de vie}
+\begin{enumerate}
+  \item Le client soumet un panier; le backend vérifie prix, disponibilité, options et mode de commande.
+  \item Une commande PENDING et une référence unique sont créées. Si paiement en ligne, une tentative PENDING est créée.
+  \item Le client est redirigé vers le prestataire. Le retour du navigateur informe l'utilisateur mais ne prouve pas le paiement.
+  \item Après vérification serveur du résultat, le paiement devient PAID et la commande peut devenir CONFIRMED. En cas d'échec, la commande reste non payée et une nouvelle tentative peut être créée.
+  \item Le restaurant reçoit la commande dans le dashboard, accepte/refuse selon les règles validées, puis fait avancer PREPARING, READY et COMPLETED.
+  \item Pour une livraison simple confirmée : READY, OUT\_FOR\_DELIVERY, DELIVERED, puis COMPLETED. Aucune fonction chauffeur n'est incluse.
+  \item Une annulation enregistre l'acteur, le motif et l'heure. Un remboursement éventuel est une opération de paiement distincte, conditionnée aux capacités CMI et aux règles du client.
+\end{enumerate}
+
+\subsection{Tentatives de paiement}
+\begin{verbatim}
+Commande TB-2026-000123
+  |-- Tentative #1 : FAILED
+  |-- Tentative #2 : FAILED
+  `-- Tentative #3 : PAID
+\end{verbatim}
+Ce modèle évite de créer plusieurs commandes pour un même achat, facilite l'assistance, conserve les références du prestataire et protège contre les résultats reçus plusieurs fois.
+
+\section{Online Payment / CMI - Paiement en ligne / CMI}
+\begin{callout}{Condition contractuelle essentielle}
+Les frais, commissions, coûts d'installation, garanties, délais de règlement et autres charges du prestataire de paiement dépendent de l'accord commercial conclu par le client avec CMI ou l'établissement acquéreur. Ils doivent être confirmés directement par le client. Aucune capacité technique précise n'est garantie sans le kit d'intégration officiel applicable au compte marchand.
+\end{callout}
+
+\subsection{Flux conceptuel}
+\begin{center}
+Client $\rightarrow$ Checkout $\rightarrow$ Backend $\rightarrow$ PaymentService $\rightarrow$ CMI $\rightarrow$ environnement sécurisé\\
+$\rightarrow$ résultat CMI $\rightarrow$ vérification backend $\rightarrow$ statut paiement $\rightarrow$ statut commande $\rightarrow$ notification restaurant
+\end{center}
+
+\subsection{Responsabilités}
+\begin{longtable}{@{}L{3cm}L{12.7cm}@{}}
+\toprule
+\textbf{Partie} & \textbf{Responsabilités} \\
+\midrule
+\client & Contacter CMI; soumettre le dossier d'affiliation; fournir les informations juridiques; signer le contrat; valider les conditions commerciales; payer les frais du prestataire; obtenir l'identifiant marchand, l'environnement de test, le kit d'intégration et les documents; transmettre les secrets par un canal sécurisé. \\
+\included & Concevoir PaymentService; implémenter l'initiation; rediriger vers l'environnement sécurisé; traiter le résultat/callback/webhook selon la documentation reçue; vérifier référence, montant et résultat; garantir l'idempotence; mettre à jour les états; journaliser; gérer les échecs; tester en sandbox; préparer la configuration production. Le remboursement est intégré seulement si le mécanisme disponible est confirmé et inclus au kit. \\
+\thirdparty & Fournir le contrat marchand, les identifiants, la documentation, les environnements, les règles de signature/vérification, les moyens de support et les conditions financières. \\
+\bottomrule
+\end{longtable}
+
+\subsection{Contrôles obligatoires}
+\begin{itemize}
+  \item Le retour ou la redirection du navigateur n'est jamais une preuve de paiement.
+  \item Le backend vérifie le résultat via le mécanisme officiel, la référence de commande, la devise, le montant et l'identité marchande.
+  \item Une clé d'idempotence et l'unicité de la référence empêchent les doubles traitements et callbacks dupliqués.
+  \item Les données de carte et CVV ne sont pas stockées ni traitées par Terrasse Bleue.
+  \item HTTPS/TLS, secrets hors du code, masquage des logs et journal d'audit sont obligatoires.
+\end{itemize}
+
+\subsection{Dépendance et stratégie de continuité}
+Le client lance l'affiliation en semaine 1. L'équipe n'attend pas les identifiants pour construire le parcours :
+\begin{verbatim}
+PaymentService
+  |-- MockPaymentAdapter  (développement et tests internes)
+  `-- CMIAdapter          (activé après réception du kit et du sandbox)
+\end{verbatim}
+Un retard CMI peut déplacer la recette paiement ou conduire à un lancement sans paiement en ligne, uniquement après décision écrite du client. Il ne bloque pas les modules indépendants.
+
+\section{Security - Sécurité}
+\begin{longtable}{@{}L{4cm}L{11.5cm}@{}}
+\toprule
+\textbf{Contrôle} & \textbf{Exigence V1} \\
+\midrule
+Transport & HTTPS/TLS en staging et production; aucun secret dans les URL. \\
+Mots de passe & Hashage Argon2id; politique minimale; aucune conservation en clair. \\
+Sessions & JWT à courte durée, refresh tokens rotatifs, révocation à la déconnexion ou en cas de risque. \\
+Accès & RBAC CUSTOMER, STAFF, MANAGER, SUPER\_ADMIN et vérification côté serveur. \\
+Entrées & DTO, validation de format/longueur/type, refus des champs inattendus et calcul des prix côté serveur. \\
+Abus & Rate limiting sur authentification, réinitialisation et endpoints sensibles. \\
+Secrets & Variables d'environnement et gestionnaire de secrets de l'hébergeur; rotation documentée. \\
+Données & Compte de base à privilèges limités, connexions chiffrées, migrations contrôlées et sauvegardes testées. \\
+Paiement & Pas de carte/CVV stocké; vérification serveur, idempotence, rapprochement référence/montant. \\
+Audit et logs & Actions admin, statuts et événements paiement horodatés; données sensibles masquées; erreurs non révélatrices. \\
+Résilience & Gestion explicite des erreurs, déduplication, retry contrôlé et alertes sur échecs critiques. \\
+\bottomrule
+\end{longtable}
+Le système n'est pas présenté comme certifié PCI-DSS. La saisie des données de carte est déléguée à l'environnement sécurisé du prestataire de paiement; le périmètre de conformité final dépend du montage contractuel et technique confirmé.
+
+\section{Infrastructure \& Deployment - Infrastructure et déploiement}
+\subsection{Environnements}
+\begin{tabularx}{\linewidth}{@{}L{3cm}Y Y@{}}
+\toprule
+\textbf{Environnement} & \textbf{Usage} & \textbf{Règles} \\
+\midrule
+Développement & Travail local, tests automatisés, MockPaymentAdapter. & Données fictives; secrets de développement; aucune donnée client réelle. \\
+Staging/Test & Recette client, sandbox CMI, validation des déploiements. & Accès limité; configuration proche de la production; contenu de test. \\
+Production & Service réel accessible au public et au restaurant. & HTTPS, secrets séparés, sauvegardes, monitoring, accès nominatifs et déploiement contrôlé. \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Services et coûts}
+\begin{longtable}{@{}L{3.1cm}L{5.8cm}L{3.1cm}L{4.1cm}@{}}
+\toprule
+\textbf{Poste} & \textbf{Déploiement retenu} & \textbf{Statut} & \textbf{Coût / limite} \\
+\midrule
+\endhead
+Serveur principal & Hostinger VPS KVM 2, Linux Ubuntu 24.04 + Docker, centre de données France & \client\ / \thirdparty & 2 vCPU, 8 Go RAM, 100 Go NVMe, 8 To de trafic \\
+Web et dashboard & Deux services Next.js conteneurisés derrière Traefik & \included & Ressources partagées du VPS \\
+API et temps réel & NestJS + Socket.IO dans un conteneur isolé & \included & Ressources partagées du VPS \\
+Base PostgreSQL & Service privé, volume persistant, migrations Prisma; aucun port public & \included & Espace et mémoire du VPS \\
+Images et fichiers & Volume persistant du VPS, servi derrière HTTPS & \included & Dans la limite des 100 Go partagés \\
+TLS et routage & Traefik + certificats Let's Encrypt renouvelés automatiquement & \included & Certificat gratuit \\
+Monitoring & Mesures Hostinger, logs applicatifs et supervision légère & \included & Base incluse; service externe optionnel \\
+Sauvegardes & Sauvegarde VPS hebdomadaire incluse + export PostgreSQL chiffré hors serveur & \included\ / \thirdparty & Quotidien Hostinger ou stockage externe en option \\
+E-mail transactionnel & Brevo ou Resend; aucun serveur mail autogéré sur le VPS & \thirdparty & Selon volume et plan \\
+Push mobile & Expo Notifications & \thirdparty & Selon conditions du service \\
+Domaine et DNS & Compte au nom du client, pointé vers l'IP du VPS & \client & Achat et renouvellement séparés \\
+CI/CD & Build, tests et déploiement Docker contrôlé & \included & Inclus dans le développement \\
+\bottomrule
+\end{longtable}
+
+\textbf{Choix recommandé : Hostinger VPS KVM 2.} Ce plan offre une marge raisonnable pour la V1 tout en regroupant les services applicatifs sur un seul serveur. Le centre de données France est recommandé pour sa proximité avec les utilisateurs au Maroc. Une montée vers KVM 4 pourra être décidée si les mesures de charge, de mémoire ou de stockage le justifient.
+
+\textbf{Ce que le VPS héberge :} menu QR/Web, dashboard, API NestJS, Socket.IO, PostgreSQL, images de la V1, reverse proxy HTTPS, logs et monitoring léger. Les services sont isolés avec Docker Compose et la base n'est pas exposée directement à Internet.
+
+\textbf{Ce qui reste externe :} CMI et les données de carte, Apple App Store, Google Play, livraison des notifications push, e-mails transactionnels, titulaire du domaine/DNS et copie de sauvegarde indépendante. Un serveur d'e-mail autogéré n'est pas retenu afin de limiter les problèmes de délivrabilité, de réputation IP et de maintenance.
+
+\textbf{Limite à expliquer au client :} cette consolidation réduit les abonnements, mais crée un point de panne unique. Le client doit conserver le compte Hostinger à son nom, activer la double authentification, financer le renouvellement, et valider une sauvegarde quotidienne ou une copie chiffrée hors VPS. La maintenance système, les mises à jour de sécurité, la surveillance de capacité et les tests de restauration font partie de l'exploitation à organiser.
+
+\section{Development Timeline - Planning de développement}
+\begin{longtable}{@{}L{1.5cm}L{4.0cm}L{9.9cm}@{}}
+\toprule
+\textbf{Sem.} & \textbf{Phase} & \textbf{Résultats attendus} \\
+\midrule
+\endhead
+1 & Cadrage et dépendances & Périmètre gelé, backlog, architecture, schéma initial; client lance CMI, comptes stores, domaine et contenu. \\
+2 & Fondations & Environnements, CI/CD, authentification, rôles, catalogue backend et base du dashboard. \\
+3 & Expérience client & Fondations mobile et Web, authentification, catégories, produits, recherche. \\
+4 & Panier et checkout & Panier, options, calcul serveur, modes de commande validés, création de commande. \\
+5 & Opérations restaurant & Kanban, acceptation/refus, transitions, historique et événements temps réel. \\
+6 & Canal QR/Web & Parcours public complet, QR, responsive, notifications transactionnelles de base. \\
+7 & Paiement abstrait & PaymentService, MockPaymentAdapter, tentatives, idempotence et cas d'échec. \\
+8 & CMI sandbox & CMIAdapter et tests si kit/identifiants disponibles; sinon poursuite QA des modules indépendants. \\
+9 & Durcissement & Sécurité, tests d'intégration, sauvegardes, monitoring, corrections. \\
+10 & Staging et recette & Déploiement staging, documentation, formation initiale et recette client. \\
+11 & Finalisation & CMI/stores si disponibles, corrections de recette, préparation production. \\
+12 & Lancement & Validation finale, déploiement, soumissions stores, transfert et démarrage de garantie. \\
+\bottomrule
+\end{longtable}
+
+\textbf{Dépendances externes :} affiliation CMI; contenu et validations client; informations légales; domaine; comptes d'hébergement; Apple Developer; Google Play Console; fournisseur e-mail/SMS le cas échéant. Tout retard sur un prérequis décale le jalon dépendant sans constituer un défaut du développeur. La date révisée est communiquée par écrit.
+
+\section{Client Responsibilities - Responsabilités du client}
+\begin{tabularx}{\linewidth}{@{}L{3.2cm}Y@{}}
+\toprule
+\textbf{Catégorie} & \textbf{Checklist à fournir ou valider} \\
+\midrule
+Entreprise & Raison sociale, forme juridique, adresse, identifiants légaux/fiscaux, représentant, contacts, informations du restaurant. \\
+Contenu & Logo, charte disponible, catégories, produits, descriptions, prix, options, allergènes, photos, disponibilité, horaires et coordonnées. \\
+Règles métier & Modes de commande, zones/frais de livraison, délais, minimum, annulation, indisponibilité, compte invité, langues. \\
+Juridique & Conditions d'utilisation/vente, politique de confidentialité, politique d'annulation/remboursement, mentions légales et consentements. Leur rédaction juridique n'est pas incluse. \\
+CMI & Affiliation, contrat, frais, kit, sandbox, identifiants, documentation et support prestataire. \\
+Comptes tiers & Domaine/DNS, hébergement si client-owned, Apple Developer, Google Play Console, e-mail/SMS et stockage selon choix. \\
+Approbations & Design, parcours, contenu, démonstrations, UAT, corrections, budget et acceptation finale dans les délais convenus. \\
+Exploitation & Matériel, connexion, personnel référent, procédure de prise en charge et disponibilité pour formation. \\
+Sécurité & Transmettre les secrets par canal sécurisé, désigner les administrateurs, retirer les accès obsolètes. \\
+\bottomrule
+\end{tabularx}
+Les retards dans ces éléments ou dans l'onboarding de tiers peuvent affecter les dates. Le client s'engage à signaler une indisponibilité et à répondre aux validations dans un délai cible de deux jours ouvrés.
+
+\section{Deliverables - Livrables}
+\begin{longtable}{@{}L{4.2cm}L{8.7cm}L{2.5cm}@{}}
+\toprule
+\textbf{Livrable} & \textbf{Contenu} & \textbf{Statut} \\
+\midrule
+\endhead
+Application mobile & Code et builds Android/iOS; soumission si comptes fournis. & \included \\
+Menu QR/Web & Site responsive public avec catalogue, panier et commande. & \included \\
+Dashboard & Interface restaurant responsive, commandes, catalogue et rôles. & \included \\
+Backend API & API NestJS, Socket.IO, sécurité et documentation. & \included \\
+Base de données & Schéma PostgreSQL, migrations Prisma et procédure de sauvegarde. & \included \\
+Paiement & PaymentService, mock et intégration CMI selon kit disponible. & \included\ / \thirdparty \\
+Notifications & Push et e-mail transactionnel; frais/quotas fournisseur séparés. & \included\ / \thirdparty \\
+Code source & Dépôts, historique utile et instructions de démarrage. & \included \\
+Configuration & Modèles de variables, CI/CD, staging et production sans secrets dans le dépôt. & \included \\
+Documentation & Architecture, API, administration, déploiement et exploitation courante. & \included \\
+Déploiement & Staging et production sur comptes convenus. & \included \\
+Formation & Une session pour 2 à 3 personnes et support de prise en main. & \included \\
+Comptes/services & Contrats, abonnements, domaines et comptes stores. & \client\ / \thirdparty \\
+Formation supplémentaire & Sessions additionnelles ou nouveaux supports. & \optional \\
+\bottomrule
+\end{longtable}
+Le transfert comprend le code et la documentation produits dans le cadre du projet, après règlement des sommes dues. Les secrets et comptes tiers restent la propriété de leur titulaire.
+
+\section{Acceptance Criteria - Critères d'acceptation}
+La recette est réalisée sur staging avec des données représentatives. Chaque anomalie doit être reproductible et reliée à un critère ci-dessous.
+\begin{longtable}{@{}L{2.7cm}L{4.1cm}L{4.2cm}L{4.3cm}@{}}
+\toprule
+\textbf{Fonction P0} & \textbf{GIVEN / Étant donné} & \textbf{WHEN / Lorsque} & \textbf{THEN / Alors} \\
+\midrule
+\endhead
+Inscription & Une adresse valide non utilisée & Le client soumet des données valides & Le compte est créé, le mot de passe n'est pas exposé et la session fonctionne. \\
+Connexion & Un compte actif & Les identifiants corrects sont soumis & Un accès client est accordé; un identifiant faux reçoit une erreur sans détail sensible. \\
+Menu & Un catalogue publié & Le client ouvre mobile ou Web & Catégories, produits, prix, options et disponibilité s'affichent de façon cohérente. \\
+Recherche & Des produits publiés & Le client saisit un terme ou choisit une catégorie & La liste présente uniquement les éléments correspondants. \\
+Panier & Un produit disponible avec options & Le client l'ajoute et modifie la quantité & Le panier conserve les options et recalcule le total; la suppression fonctionne. \\
+Checkout & Un panier valide & Le client confirme les informations requises & Le backend revalide prix/disponibilité et produit un récapitulatif exact. \\
+Commande & Un checkout valide & Le client soumet une fois ou répète accidentellement la même requête & Une seule commande référencée est créée et apparaît au dashboard. \\
+Paiement réussi & Une commande payable et un sandbox disponible & Le prestataire confirme un succès vérifiable & Référence, montant et résultat sont vérifiés; paiement PAID; commande CONFIRMED; restaurant et client notifiés. \\
+Paiement échoué & Une tentative en cours & Le prestataire indique un échec ou le résultat n'est pas validable & Tentative FAILED; commande non payée; retry possible; aucun doublon de commande. \\
+Callback dupliqué & Un paiement déjà traité & Le même résultat est reçu à nouveau & Aucun double débit logique, changement contradictoire ou notification multiple n'est créé. \\
+Suivi & Une commande existante & Le personnel passe CONFIRMED à PREPARING puis READY & Le client voit les transitions en temps réel ou après rafraîchissement. \\
+Kanban & Un STAFF authentifié & Une nouvelle commande valide arrive & Elle apparaît avec alerte et peut avancer uniquement selon les transitions autorisées. \\
+Catalogue admin & Un MANAGER authentifié & Il modifie prix/disponibilité et publie & Mobile et Web reflètent la nouvelle valeur; l'action est auditée. \\
+RBAC & Un STAFF authentifié & Il tente une action réservée au MANAGER & L'API refuse l'action et aucune donnée n'est modifiée. \\
+Annulation & Une commande annulable selon règle validée & Un acteur autorisé annule avec motif & Commande CANCELLED; motif/acteur/heure enregistrés; remboursement traité séparément si nécessaire. \\
+Déploiement & Les comptes production sont fournis & La version approuvée est déployée & Web/API sont accessibles en HTTPS, sauvegarde et monitoring configurés, secrets absents du dépôt. \\
+\bottomrule
+\end{longtable}
+
+\textbf{Processus d'acceptation :} le client dispose de cinq jours ouvrés après notification de mise en recette pour signaler les anomalies P0/P1 par écrit. L'équipe corrige les anomalies reproductibles du périmètre. Les préférences nouvelles ou fonctions absentes relèvent d'une demande de changement. L'acceptation finale est formalisée par procès-verbal ou signature de la section 18.
+
+\section{Price \& Budget - Prix et budget}
+\subsection{A. Coût de développement}
+Le montant proposé pour la V1 décrite dans ce document est un \textbf{forfait commercial fixe de 30 000 MAD}, hors frais de prestataires tiers. Ce prix couvre l'ensemble du périmètre V1 et des livrables explicitement décrits dans la présente proposition. Il suppose un périmètre strict, des validations client rapides et l'absence d'évolutions non prévues.
+
+\begin{tabularx}{\linewidth}{@{}L{4.0cm}Y L{2.8cm}@{}}
+\toprule
+\textbf{Lot} & \textbf{Contenu inclus} & \textbf{Statut} \\
+\midrule
+Cadrage et conception & Ateliers, règles métier, backlog, parcours UX et architecture. & \included \\
+Applications client & Menu QR/Web et application Android/iOS : catalogue, panier, commande et suivi. & \included \\
+Restaurant et commandes & Dashboard, rôles, catalogue, Kanban, statuts et temps réel. & \included \\
+Backend et sécurité & API NestJS, PostgreSQL/Prisma, authentification, audit et validations. & \included \\
+Paiement et notifications & Adaptateur CMI selon kit fourni, paiement mock, push et e-mails transactionnels. & \included\ / \thirdparty \\
+Livraison du projet & Tests, staging, production, documentation, formation et transfert du code. & \included \\
+\midrule
+\multicolumn{2}{r}{\textbf{PRIX TOTAL DU DÉVELOPPEMENT V1}} & \textbf{30 000 MAD} \\
+\bottomrule
+\end{tabularx}
+
+Ce montant couvre uniquement les fonctionnalités et prestations explicitement décrites. Toute demande supplémentaire suit la procédure de Change Request de la section 16. Les taxes éventuellement applicables sont précisées sur le devis ou la facture de l'entité prestataire.
+
+\subsection{B. Coûts tiers payés directement par le client}
+Les services ci-dessous sont souscrits et payés directement par le client. Le budget Hostinger utilise le tarif de renouvellement, plus prudent que le prix promotionnel de première souscription.
+
+\small
+\begin{tabularx}{\linewidth}{@{}L{4.0cm}Y L{3.2cm}r@{}}
+\toprule
+\textbf{Service} & \textbf{Fournisseur} & \textbf{Facturation} & \textbf{Année 1} \\
+\midrule
+VPS KVM 2 & Hostinger & 124,99 MAD/mois au renouvellement & 1 500 MAD \\
+E-mails transactionnels & Brevo & 90 MAD/mois & 1 080 MAD \\
+Domaine et DNS & Registrar & Annuel & 250 MAD \\
+Compte Android & Google Play & Une fois & 250 MAD \\
+Compte iOS & Apple Developer & Annuel & 1 000 MAD \\
+Activation paiement & CMI / acquéreur & Une fois, provision & 2 000 MAD \\
+Commissions paiement & CMI / acquéreur & Par transaction & Variable \\
+Backup quotidien externe & Hostinger / autre & Option recommandée & À confirmer \\
+\midrule
+\multicolumn{3}{r}{\textbf{TOTAL ANNÉE 1, HORS BACKUP OPTIONNEL ET COMMISSIONS}} & \textbf{6 080 MAD} \\
+\bottomrule
+\end{tabularx}
+\normalsize
+
+\begin{callout}{Inclus dans le VPS Hostinger}
+API, menu Web, dashboard, PostgreSQL, images, certificat TLS, monitoring de base et sauvegarde hebdomadaire : aucun abonnement séparé n'est prévu pour ces éléments.
+\end{callout}
+
+\textbf{Enveloppe conseillée : environ 6 100 MAD pour la première année}, hors backup quotidien optionnel et commissions CMI. Le prix final de chaque service doit être confirmé par le client avant l'achat.
+
+{\footnotesize Références consultées le 20 août 2026 : \href{https://www.hostinger.com/ma-fr/vps}{Hostinger VPS Maroc}, \href{https://www.hostinger.com/support/6976044-parameters-and-limits-of-hosting-plans-in-hostinger/}{limites des plans KVM}, \href{https://www.hostinger.com/support/1583232-how-to-back-up-or-restore-a-vps-at-hostinger/}{sauvegardes VPS}, \href{https://developer.apple.com/support/compare-memberships/}{Apple Developer}, \href{https://support.google.com/googleplay/android-developer/answer/6112435?hl=fr}{Google Play Console} et \href{https://help.brevo.com/hc/fr/articles/208589409}{Brevo}. Les taxes, les promotions, la durée d'engagement, la consommation et les révisions tarifaires peuvent modifier les montants.}
+
+\subsection{C. Maintenance optionnelle}
+Après la garantie, un contrat séparé peut couvrir supervision, mises à jour, support et évolutions. Le rapport source évoquait 800, 1 500 et 2 500 MAD/mois selon niveau; ces montants restent indicatifs et doivent faire l'objet d'un devis précisant heures, délais et exclusions.
+
+\section{Payment Schedule - Échéancier de paiement}
+L'échéancier recommandé, négociable lors de la signature, relie chaque paiement à un résultat observable :
+\begin{tabularx}{\linewidth}{@{}L{2.2cm}L{3.2cm}L{3.0cm}Y@{}}
+\toprule
+\textbf{Pourcentage} & \textbf{Montant} & \textbf{Jalon} & \textbf{Condition} \\
+\midrule
+20\% & 6 000 MAD & Démarrage & Signature, acompte, atelier de cadrage et accès nécessaires. \\
+30\% & 9 000 MAD & Coeur V1 & Authentification, catalogue, panier, commande et dashboard démontrables. \\
+30\% & 9 000 MAD & UAT & Mobile, QR/Web, temps réel, paiement mock/CMI selon disponibilité et staging ouvert à la recette. \\
+20\% & 6 000 MAD & Lancement & Corrections de recette, documentation, formation et déploiement production. \\
+\midrule
+\textbf{100\%} & \textbf{30 000 MAD} & \multicolumn{2}{l}{\textbf{Total du développement V1}} \\
+\bottomrule
+\end{tabularx}
+Les frais CMI, hébergement, domaine, stores et autres fournisseurs sont séparés et ne sont pas déduits de ces jalons. Si CMI retarde une fonction dépendante, les parties conviennent par écrit de déplacer le jalon concerné ou de valider la V1 avec l'adaptateur mock et une réserve CMI.
+
+\section{Warranty \& Maintenance - Garantie et maintenance}
+\subsection{Garantie anomalies}
+Une garantie unique de \textbf{60 jours calendaires} commence à l'acceptation finale ou à la mise en production, la première des deux dates faisant foi sauf accord écrit différent. Elle couvre la correction des défauts reproductibles empêchant une fonctionnalité livrée de respecter le périmètre et les critères d'acceptation.
+
+La garantie n'inclut pas : nouvelle fonction, changement de contenu massif, modification de règle métier, changement de design, intégration supplémentaire, incident d'un fournisseur, mauvaise utilisation, accès compromis par le client, ou modification du système par un tiers. Aucun support illimité ou disponibilité 24/7 n'est promis.
+
+\subsection{Maintenance payante}
+Après la garantie, ou immédiatement pour les demandes hors garantie, la maintenance peut couvrir nouvelles fonctions, modifications, contenu, design, nouvelles intégrations, infrastructure, supervision et support. Un contrat séparé précise heures incluses, délai de réponse, prix, période et procédure d'escalade.
+
+\section{Change Request Policy - Politique de changement}
+Seules les fonctions explicitement listées dans le périmètre V1 approuvé sont incluses. Une demande est un changement si elle ajoute ou modifie une règle, un écran, un rôle, un rapport, une intégration, une langue ou un volume au-delà de ce périmètre.
+
+Chaque Change Request doit contenir :
+\begin{enumerate}
+  \item description et justification;
+  \item impact fonctionnel et technique;
+  \item estimation des heures et du coût en MAD;
+  \item impact sur les jalons et la date de livraison;
+  \item risques, critères d'acceptation et décision écrite du client.
+\end{enumerate}
+Aucun travail additionnel n'est considéré approuvé avant acceptation écrite. Exemples : fidélité, réservation, POS/caisse, application chauffeur, nouveau prestataire de paiement, redesign majeur, nouveaux rapports, nouvelle langue ou intégration tierce.
+
+\section{Exclusions - Exclusions}
+Sont exclus du prix de développement, sauf avenant écrit :
+\begin{itemize}
+  \item frais CMI/acquéreur, bancaires, commissions, garanties et abonnements;
+  \item hébergement, domaine, renouvellements, stockage, monitoring, e-mail/SMS et autres abonnements;
+  \item frais et approbation Apple Developer / Google Play;
+  \item photographie, rédaction/traduction du contenu, marketing et publicité;
+  \item rédaction ou validation juridique, comptabilité et conseil fiscal;
+  \item matériel : tablettes, imprimantes, POS, Wi-Fi, réseau et maintenance associée;
+  \item recrutement/gestion des livreurs, application chauffeur, itinéraires et suivi GPS;
+  \item multi-restaurant, fidélité avancée, réservation, IA, BI avancée, marketplace et intégration POS complexe;
+  \item migration de données non décrite, saisie massive de catalogue et formation supplémentaire;
+  \item nouvelles fonctions ou modifications après gel du périmètre;
+  \item maintenance et développement après la garantie de 60 jours.
+\end{itemize}
+
+\section{Client Approval - Approbation client}
+\begin{callout}{Déclaration d'approbation}
+En signant ce document, les deux parties reconnaissent et approuvent le périmètre du projet, les livrables, hypothèses, exclusions, calendrier estimé et conditions commerciales décrits ci-dessus. Les éléments marqués « A confirmer » restent soumis à validation écrite ou au contrat du prestataire concerné.
+\end{callout}
+
+\vspace{0.5cm}
+\begin{tabularx}{\linewidth}{@{}L{5.4cm}Y@{}}
+\toprule
+\textbf{PROJET} & Terrasse Bleue \\
+\textbf{CLIENT} & \rule{8cm}{0.4pt} \\
+\textbf{REPRESENTANT} & \rule{8cm}{0.4pt} \\
+\textbf{DEVELOPPEUR / SOCIETE} & \rule{8cm}{0.4pt} \\
+\textbf{VERSION DU PROJET} & \rule{8cm}{0.4pt} \\
+\textbf{DATE} & \rule{8cm}{0.4pt} \\
+\textbf{BUDGET APPROUVE} & \rule{8cm}{0.4pt} MAD \\
+\textbf{LIVRAISON ESTIMEE} & \rule{8cm}{0.4pt} \\
+\bottomrule
+\end{tabularx}
+
+\vspace{1.7cm}
+\begin{tabularx}{\linewidth}{@{}Y Y@{}}
+\textbf{Signature client} & \textbf{Signature développeur} \\
+\\[2.2cm]
+\rule{6.8cm}{0.4pt} & \rule{6.8cm}{0.4pt} \\
+Nom, qualité, date et cachet & Nom, qualité, date et cachet \\
+\end{tabularx}
+
+\vfill
+\begin{center}
+\textcolor{navy}{\textbf{TERRASSE BLEUE}}\\
+\small Proposition de projet - Version 1.1 - 20 août 2026
+\end{center}
+
+\end{document}
